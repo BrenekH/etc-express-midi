@@ -6,7 +6,7 @@ fn main() {
 
     println!("\nPorts\n================================");
     for (i, port) in ports.iter().enumerate() {
-        println!("{i}: {}", client_1.port_name(&port).unwrap());
+        println!("{i}: {}", client_1.port_name(port).unwrap());
     }
     println!("================================\n");
 
@@ -17,7 +17,7 @@ fn main() {
         .read_line(&mut input_line)
         .expect("Failed to read line");
     let midi_port_index: usize = input_line.trim().parse().expect("Input not an integer");
-    println!("");
+    println!();
 
     let mut midi_conn = client_1
         .connect(&(ports[midi_port_index]), "Testing Output 1")
