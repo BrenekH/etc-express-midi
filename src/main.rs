@@ -26,7 +26,7 @@ fn main() {
     let mut express_console = etc_express_midi::ConsoleETCMidi::new(&mut midi_conn, midi_channel);
 
     println!("Sending Go command using ETC Midi");
-    express_console.go(etc_express_midi::FaderPair::CD).unwrap();
+    express_console.go_cue(etc_express_midi::FaderPair::CD, 1).unwrap();
     println!("Sent first Go command");
 
     for i in (1..6).rev() {
