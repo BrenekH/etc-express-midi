@@ -1,7 +1,7 @@
 use std::{io, io::Write, thread, time};
 
 fn main() {
-    let client_1 = etc_express_midi::MidiOutput::new("Client 1").unwrap();
+    let client_1 = etc_express_midi::MidiOutput::new("etc_express_midi Tester").unwrap();
     let ports = client_1.ports();
 
     println!("\nPorts\n================================");
@@ -19,16 +19,14 @@ fn main() {
     let midi_port_index: usize = input_line.trim().parse().expect("Input not an integer");
     println!("");
 
-    let mut midi_conn = client_1.connect(&(ports[midi_port_index]), "Test").unwrap();
-
+    let mut midi_conn = client_1
+        .connect(&(ports[midi_port_index]), "Testing Output 1")
+        .unwrap();
     let midi_channel = 0;
+    let mut express_console = etc_express_midi::ConsoleETCMidi::new(&mut midi_conn, midi_channel);
+
     println!("Sending Go command using ETC Midi");
-    etc_express_midi::go_etc_midi(
-        &mut midi_conn,
-        midi_channel,
-        etc_express_midi::FaderPair::CD,
-    )
-    .unwrap();
+    express_console.go(etc_express_midi::FaderPair::CD).unwrap();
     println!("Sent first Go command");
 
     for i in (1..6).rev() {
@@ -37,25 +35,15 @@ fn main() {
     }
 
     println!("Sending Go command using ETC Midi");
-    etc_express_midi::go_etc_midi(
-        &mut midi_conn,
-        midi_channel,
-        etc_express_midi::FaderPair::CD,
-    )
-    .unwrap();
+    express_console.go(etc_express_midi::FaderPair::CD).unwrap();
     println!("Sent second Go command");
-    
+
     for i in (1..6).rev() {
         println!("{i}");
         thread::sleep(time::Duration::from_secs(1));
     }
 
     println!("Sending Go command using ETC Midi");
-    etc_express_midi::go_etc_midi(
-        &mut midi_conn,
-        midi_channel,
-        etc_express_midi::FaderPair::CD,
-    )
-    .unwrap();
+    express_console.go(etc_express_midi::FaderPair::CD).unwrap();
     println!("Sent third Go command");
 }
