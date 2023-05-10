@@ -2,7 +2,7 @@ mod etc_midi;
 mod msc;
 
 // Library exports
-pub use etc_midi::go_etc_midi;
+pub use etc_midi::ConsoleETCMidi;
 pub use msc::go_msc;
 
 // Re-exports

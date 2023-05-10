@@ -1,6 +1,24 @@
 use crate::{Command, FaderPair};
 use midir::{MidiOutputConnection, SendError};
 
+struct ConsoleMSC;
+
+impl ConsoleMSC {
+    fn new() {}
+
+    fn go() {}
+
+    fn go_cue() {}
+
+    fn stop() {}
+
+    fn stop_all() {}
+
+    fn resume() {}
+
+    fn resume_all() {}
+}
+
 pub fn go_msc(
     conn: &mut MidiOutputConnection,
     device_id: u8,
