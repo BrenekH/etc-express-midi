@@ -3,7 +3,7 @@ mod msc;
 
 // Library exports
 pub use etc_midi::ConsoleETCMidi;
-pub use msc::go_msc;
+pub use msc::ConsoleMSC;
 
 // Re-exports
 pub use midir::MidiOutput;
@@ -16,8 +16,8 @@ pub enum FaderPair {
 impl FaderPair {
     fn value(&self) -> u8 {
         match self {
-            FaderPair::AB => 49,
-            FaderPair::CD => 50,
+            FaderPair::AB => 0x31,
+            FaderPair::CD => 0x32,
         }
     }
 }
