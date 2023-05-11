@@ -19,11 +19,11 @@ fn main() {
     let midi_port_index: usize = input_line.trim().parse().expect("Input not an integer");
     println!();
 
-    let mut midi_conn = client_1
+    let midi_conn = client_1
         .connect(&(ports[midi_port_index]), "Testing Output 1")
         .unwrap();
     let midi_channel = 0;
-    let mut express_console = etc_express_midi::ConsoleETCMidi::new(&mut midi_conn, midi_channel);
+    let mut express_console = etc_express_midi::ConsoleETCMidi::new(midi_conn, midi_channel);
 
     println!("Sending Go command using ETC Midi");
     express_console.go_cue(etc_express_midi::FaderPair::CD, 1).unwrap();

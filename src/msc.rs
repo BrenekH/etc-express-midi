@@ -1,13 +1,13 @@
 use crate::{Command, FaderPair};
 use midir::{MidiOutputConnection, SendError};
 
-pub struct ConsoleMSC<'a> {
-    midi_conn: &'a mut MidiOutputConnection,
+pub struct ConsoleMSC {
+    midi_conn: MidiOutputConnection,
     device_id: u8,
 }
 
-impl<'a> ConsoleMSC<'a> {
-    pub fn new(midi_conn: &'a mut MidiOutputConnection, device_id: u8) -> ConsoleMSC<'a> {
+impl ConsoleMSC {
+    pub fn new(midi_conn: MidiOutputConnection, device_id: u8) -> ConsoleMSC {
         ConsoleMSC {
             midi_conn,
             device_id,

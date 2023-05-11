@@ -1,13 +1,13 @@
 use crate::FaderPair;
 use midir::{MidiOutputConnection, SendError};
 
-pub struct ConsoleETCMidi<'a> {
-    midi_conn: &'a mut MidiOutputConnection,
+pub struct ConsoleETCMidi {
+    midi_conn: MidiOutputConnection,
     midi_chan_num: u8, // Midi channel number 0 to 15
 }
 
-impl<'a> ConsoleETCMidi<'a> {
-    pub fn new(midi_conn: &'a mut MidiOutputConnection, midi_chan_num: u8) -> ConsoleETCMidi<'a> {
+impl ConsoleETCMidi {
+    pub fn new(midi_conn: MidiOutputConnection, midi_chan_num: u8) -> ConsoleETCMidi {
         ConsoleETCMidi {
             midi_conn,
             midi_chan_num,
