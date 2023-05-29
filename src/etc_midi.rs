@@ -65,12 +65,12 @@ impl ConsoleETCMidi {
                 match message_type {
                     MessageType::ProgramChange => vec![
                         message_type.value() + self.midi_chan_num,
-                        parameter.try_into().unwrap(),
+                        parameter.try_into()?,
                     ],
                     MessageType::ControllerChange => vec![
                         message_type.value() + self.midi_chan_num,
                         controller_change,
-                        parameter.try_into().unwrap(),
+                        parameter.try_into()?,
                     ],
                 }
             }
@@ -100,7 +100,7 @@ impl ConsoleETCMidi {
                     }
                 };
 
-                vec![byte1, controller_change, parameter.try_into().unwrap()]
+                vec![byte1, controller_change, parameter.try_into()?]
             }
         };
 

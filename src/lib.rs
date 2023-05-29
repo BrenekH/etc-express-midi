@@ -14,8 +14,8 @@ pub enum Error {
     MidiSendError(#[from] midir::SendError),
     #[error("invalid cue number '{number}' because it is {reason}")]
     InvalidCue{number: u16, reason: String},
-    // #[error("parse error: {0}")
-    // ParseError,
+    #[error("parse int error: {0}")]
+    ParseIntError(#[from] std::num::TryFromIntError),
 }
 
 pub enum FaderPair {
