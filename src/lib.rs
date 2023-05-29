@@ -8,6 +8,16 @@ pub use msc::ConsoleMSC;
 // Re-exports
 pub use midir::MidiOutput;
 
+#[derive(thiserror::Error, Debug)]
+pub enum Error {
+    #[error("{0}")]
+    MidiSendError(#[from] midir::SendError),
+    #[error("invalid cue number '{number}' because it is {reason}")]
+    InvalidCue{number: u16, reason: String},
+    // #[error("parse error: {0}")
+    // ParseError,
+}
+
 pub enum FaderPair {
     AB,
     CD,

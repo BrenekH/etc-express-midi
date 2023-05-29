@@ -1,5 +1,5 @@
-use crate::FaderPair;
-use midir::{MidiOutputConnection, SendError};
+use crate::{Error, FaderPair};
+use midir::MidiOutputConnection;
 
 pub struct ConsoleETCMidi {
     midi_conn: MidiOutputConnection,
@@ -14,7 +14,7 @@ impl ConsoleETCMidi {
         }
     }
 
-    pub fn go(&mut self, fader_pair: FaderPair) -> Result<(), SendError> {
+    pub fn go(&mut self, fader_pair: FaderPair) -> Result<(), Error> {
         let bytes: Vec<u8> = match fader_pair {
             FaderPair::AB => {
                 let byte1 = 0xC0 + self.midi_chan_num; // Byte which contains type of message and Midi channel number
@@ -26,20 +26,22 @@ impl ConsoleETCMidi {
             }
         };
 
-        self.midi_conn.send(bytes.as_slice())
+        self.midi_conn
+            .send(bytes.as_slice())
+            .map_err(|e| Error::MidiSendError(e))
     }
 
-    pub fn go_cue(&mut self, fader_pair: FaderPair, cue_number: u16) -> Result<(), SendError> {
+    pub fn go_cue(&mut self, fader_pair: FaderPair, cue_number: u16) -> Result<(), Error> {
         let bytes: Vec<u8> = match fader_pair {
             FaderPair::AB => {
                 let mut message_type = MessageType::ControllerChange;
 
                 let (controller_change, parameter) = match cue_number {
                     0 => {
-                        // Error case
-                        panic!(
-                            "Replace this panic with an error. Also 0 is not a valid cue number"
-                        );
+                        return Err(Error::InvalidCue {
+                            number: 0,
+                            reason: "too small".into(),
+                        });
                     }
                     1..=127 => {
                         message_type = MessageType::ProgramChange;
@@ -53,8 +55,10 @@ impl ConsoleETCMidi {
                     768..=895 => (83, cue_number - 768),
                     896..=999 => (84, cue_number - 896),
                     _ => {
-                        // Error case: cue number too large
-                        panic!("Replace this panic with an error. Also the cue number provided was too large");
+                        return Err(Error::InvalidCue {
+                            number: cue_number,
+                            reason: "too large".into(),
+                        });
                     }
                 };
 
@@ -75,10 +79,10 @@ impl ConsoleETCMidi {
 
                 let (controller_change, parameter) = match cue_number {
                     0 => {
-                        // Error case
-                        panic!(
-                            "Replace this panic with an error. Also 0 is not a valid cue number"
-                        );
+                        return Err(Error::InvalidCue {
+                            number: 0,
+                            reason: "too small".into(),
+                        });
                     }
                     1..=127 => (77, cue_number),
                     128..=255 => (78, cue_number - 128),
@@ -89,8 +93,10 @@ impl ConsoleETCMidi {
                     768..=895 => (83, cue_number - 768),
                     896..=999 => (84, cue_number - 896),
                     _ => {
-                        // Error case: cue number too large
-                        panic!("Replace this panic with an error. Also the cue number provided was too large");
+                        return Err(Error::InvalidCue {
+                            number: cue_number,
+                            reason: "too large".into(),
+                        });
                     }
                 };
 
@@ -98,7 +104,9 @@ impl ConsoleETCMidi {
             }
         };
 
-        self.midi_conn.send(bytes.as_slice())
+        self.midi_conn
+            .send(bytes.as_slice())
+            .map_err(|e| Error::MidiSendError(e))
     }
 }
 
