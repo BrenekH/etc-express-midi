@@ -28,7 +28,7 @@ impl ConsoleETCMidi {
 
         self.midi_conn
             .send(bytes.as_slice())
-            .map_err(|e| Error::MidiSendError(e))
+            .map_err(Error::MidiSendError)
     }
 
     pub fn go_cue(&mut self, fader_pair: FaderPair, cue_number: u16) -> Result<(), Error> {
@@ -106,7 +106,7 @@ impl ConsoleETCMidi {
 
         self.midi_conn
             .send(bytes.as_slice())
-            .map_err(|e| Error::MidiSendError(e))
+            .map_err(Error::MidiSendError)
     }
 }
 

@@ -49,7 +49,7 @@ impl ConsoleMSC {
                 macro_number,
                 0xF7,
             ])
-            .map_err(|e| Error::MidiSendError(e))
+            .map_err(Error::MidiSendError)
     }
 
     fn send_msc_frame(
@@ -86,7 +86,7 @@ impl ConsoleMSC {
         .concat();
         self.midi_conn
             .send(&bytes)
-            .map_err(|e| Error::MidiSendError(e))
+            .map_err(Error::MidiSendError)
     }
 }
 
