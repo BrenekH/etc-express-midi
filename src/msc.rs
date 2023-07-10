@@ -1,12 +1,29 @@
 use crate::{Error, FaderPair};
 use midir::MidiOutputConnection;
 
+/// Control the ETC Express lighting console using MIDI Show Control
+/// (requires a controller which passes SysEx messages).
 pub struct ConsoleMSC {
     midi_conn: MidiOutputConnection,
     device_id: u8,
 }
 
 impl ConsoleMSC {
+    /// Create a new [ConsoleMSC]
+    ///
+    /// ```
+    /// use etc_express_midi::{MidiOutput, ConsoleMSC};
+    ///
+    /// let midi_client = MidiOutput::new("ETC MSC Example")?;
+    /// let midi_ports = midi_client.ports();
+    ///
+    /// let midi_port_index = 0; // The index of the desired controller
+    /// let midi_conn = midi_client.connect(&(midi_ports[midi_port_index]), "Example Output")?;
+    ///
+    /// let msc_device_id = 1;
+    /// let mut express_console = ConsoleMSC::new(midi_conn, msc_device_id);
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
     pub fn new(midi_conn: MidiOutputConnection, device_id: u8) -> ConsoleMSC {
         ConsoleMSC {
             midi_conn,
@@ -14,30 +31,66 @@ impl ConsoleMSC {
         }
     }
 
+    /// Execute the next cue in a [FaderPair]
+    ///
+    /// ```rust
+    /// # use etc_express_midi::{MidiOutput, ConsoleMSC, FaderPair};
+    /// # let midi_client = MidiOutput::new("ETC MSC Example")?;
+    /// # let midi_ports = midi_client.ports();
+    /// # let midi_port_index = 0; // The index of the desired controller
+    /// # let midi_conn = midi_client.connect(&(midi_ports[midi_port_index]), "Example Output")?;
+    /// # let msc_device_id = 0;
+    /// # let mut express_console = ConsoleMSC::new(midi_conn, msc_device_id);
+    /// // ...
+    ///
+    /// express_console.go(FaderPair::AB)?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
     pub fn go(&mut self, fader_pair: FaderPair) -> Result<(), Error> {
         self.send_msc_frame(Command::Go, Some(fader_pair), Some(0))
     }
 
+    /// Execute a specific cue in a [FaderPair]
+    ///
+    /// ```rust
+    /// # use etc_express_midi::{MidiOutput, ConsoleMSC, FaderPair};
+    /// # let midi_client = MidiOutput::new("ETC MSC Example")?;
+    /// # let midi_ports = midi_client.ports();
+    /// # let midi_port_index = 0; // The index of the desired controller
+    /// # let midi_conn = midi_client.connect(&(midi_ports[midi_port_index]), "Example Output")?;
+    /// # let msc_device_id = 0;
+    /// # let mut express_console = ConsoleMSC::new(midi_conn, msc_device_id);
+    /// // ...
+    ///
+    /// // Seek to cue 1 and execute it in the AB fader pair
+    /// express_console.go_cue(FaderPair::AB, 1)?;
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
+    /// ```
     pub fn go_cue(&mut self, fader_pair: FaderPair, cue_number: u16) -> Result<(), Error> {
         self.send_msc_frame(Command::Go, Some(fader_pair), Some(cue_number))
     }
 
+    /// Stop the currently executing cue in a specific [FaderPair]
     pub fn stop(&mut self, fader_pair: FaderPair) -> Result<(), Error> {
         self.send_msc_frame(Command::Stop, Some(fader_pair), Some(0x69))
     }
 
+    /// Stop all currently executing cues
     pub fn stop_all(&mut self) -> Result<(), Error> {
         self.send_msc_frame(Command::Stop, None, None)
     }
 
+    /// Resume the cue in a specific [FaderPair]
     pub fn resume(&mut self, fader_pair: FaderPair) -> Result<(), Error> {
         self.send_msc_frame(Command::Resume, Some(fader_pair), Some(0x69))
     }
 
+    /// Resume all cues currently stopped
     pub fn resume_all(&mut self) -> Result<(), Error> {
         self.send_msc_frame(Command::Resume, None, None)
     }
 
+    /// Run a specific macro
     pub fn fire_macro(&mut self, macro_number: u8) -> Result<(), Error> {
         self.midi_conn
             .send(&[
@@ -52,6 +105,8 @@ impl ConsoleMSC {
             .map_err(Error::MidiSendError)
     }
 
+    /// Sends an MSC frame constructed from the provided parameters
+    /// to the [MidiOutputConnection] stored in the struct.
     fn send_msc_frame(
         &mut self,
         command: Command,
