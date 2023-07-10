@@ -1,4 +1,4 @@
-use crate::{Command, Error, FaderPair};
+use crate::{Error, FaderPair};
 use midir::MidiOutputConnection;
 
 pub struct ConsoleMSC {
@@ -87,5 +87,25 @@ impl ConsoleMSC {
         self.midi_conn
             .send(&bytes)
             .map_err(|e| Error::MidiSendError(e))
+    }
+}
+
+/// The possible commands that can be sent to the console
+enum Command {
+    Go = 1,
+    Stop = 2,
+    Resume = 3,
+    Fire = 4,
+}
+
+impl Command {
+    /// Maps a [Command] to a binary value that can be used in MIDI commands
+    fn value(&self) -> u8 {
+        match self {
+            Command::Go => 1,
+            Command::Stop => 2,
+            Command::Resume => 3,
+            Command::Fire => 4,
+        }
     }
 }
