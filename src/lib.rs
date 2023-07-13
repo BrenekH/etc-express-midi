@@ -22,7 +22,7 @@
 //!     let midi_port_index = 0; // The index of the desired controller
 //!     let midi_conn = midi_client.connect(&(midi_ports[midi_port_index]), "Example Output")?;
 //!
-//!     let express_midi_channel = 0; // The MIDI port from the console offset by -1
+//!     let express_midi_channel = 1;
 //!     let mut express_console = ConsoleETCMidi::new(midi_conn, express_midi_channel);
 //!
 //!     // Execute the next cue in the CD fader pair

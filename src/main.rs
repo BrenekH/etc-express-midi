@@ -22,7 +22,7 @@ fn main() {
     let midi_conn = client_1
         .connect(&(ports[midi_port_index]), "Testing Output 1")
         .unwrap();
-    let midi_channel = 0;
+    let midi_channel = 1;
     let mut express_console = etc_express_midi::ConsoleETCMidi::new(midi_conn, midi_channel);
 
     println!("Sending Go command using ETC Midi");

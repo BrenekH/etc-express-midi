@@ -5,14 +5,14 @@ use midir::MidiOutputConnection;
 /// MIDI instrument commands.
 pub struct ConsoleETCMidi {
     midi_conn: MidiOutputConnection,
-    midi_chan_num: u8, // Midi channel number 0 to 15
+    midi_chan_num: u8, // Midi channel number 1 to 16
 }
 
 impl ConsoleETCMidi {
     /// Create a new [ConsoleETCMidi]
     ///
     /// Requires an existing [MidiOutputConnection] and the MIDI output channel
-    /// number configured in the Express's settings in zero-indexed form (subtract by 1 ex. 12 -> 11).
+    /// number configured in the Express's settings.
     ///
     /// ```rust
     /// use etc_express_midi::{MidiOutput, ConsoleETCMidi};
@@ -23,14 +23,14 @@ impl ConsoleETCMidi {
     /// let midi_port_index = 0; // The index of the desired controller
     /// let midi_conn = midi_client.connect(&(midi_ports[midi_port_index]), "Example Output")?;
     ///
-    /// let express_midi_channel = 0; // The MIDI port from the console offset by -1
+    /// let express_midi_channel = 1;
     /// let mut express_console = ConsoleETCMidi::new(midi_conn, express_midi_channel);
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn new(midi_conn: MidiOutputConnection, midi_chan_num: u8) -> ConsoleETCMidi {
         ConsoleETCMidi {
             midi_conn,
-            midi_chan_num,
+            midi_chan_num: midi_chan_num - 1,
         }
     }
 
@@ -42,7 +42,7 @@ impl ConsoleETCMidi {
     /// # let midi_ports = midi_client.ports();
     /// # let midi_port_index = 0; // The index of the desired controller
     /// # let midi_conn = midi_client.connect(&(midi_ports[midi_port_index]), "Example Output")?;
-    /// # let express_midi_channel = 0; // The MIDI port from the console offset by -1
+    /// # let express_midi_channel = 1;
     /// # let mut express_console = ConsoleETCMidi::new(midi_conn, express_midi_channel);
     /// // ...
     ///
@@ -74,7 +74,7 @@ impl ConsoleETCMidi {
     /// # let midi_ports = midi_client.ports();
     /// # let midi_port_index = 0; // The index of the desired controller
     /// # let midi_conn = midi_client.connect(&(midi_ports[midi_port_index]), "Example Output")?;
-    /// # let express_midi_channel = 0; // The MIDI port from the console offset by -1
+    /// # let express_midi_channel = 1;
     /// # let mut express_console = ConsoleETCMidi::new(midi_conn, express_midi_channel);
     /// // ...
     ///
