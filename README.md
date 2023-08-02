@@ -1,5 +1,8 @@
 # ETC Express MIDI
 
+![Crates.io](https://img.shields.io/crates/v/etc-express-midi)
+![docs.rs](https://img.shields.io/docsrs/etc-express-midi)
+
 Rust library to control the [ETC Express](https://www.etcconnect.com/Products/Legacy/Console/Others/Express/Support-Articles.aspx) lighting console using MIDI commands.
 
 This library contains 2 methods of interacting with the Express console:
