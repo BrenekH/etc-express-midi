@@ -7,7 +7,7 @@
 //!   Any USB to MIDI adapter should work with this method.
 //!
 //! - [Method 2](ConsoleMSC) uses MIDI Show Control to operate the Express.
-//!   This method requires a MIDI adapter that passes SysEx commands.
+//!   This method requires a MIDI adapter that passes [SysEx](https://en.wikipedia.org/wiki/MIDI#System_Exclusive_messages) commands.
 //!
 //! ## Examples
 //!
