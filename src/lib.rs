@@ -75,7 +75,10 @@ pub enum Error {
 }
 
 /// Represents either the AB or CD fader pair on the Express console
+#[derive(Debug, Clone, Copy, Default, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum FaderPair {
+    #[default]
     AB,
     CD,
 }
@@ -87,5 +90,15 @@ impl FaderPair {
             FaderPair::AB => 0x31,
             FaderPair::CD => 0x32,
         }
+    }
+}
+
+impl std::fmt::Display for FaderPair {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let str_repr: &str = match self {
+            FaderPair::AB => "AB",
+            FaderPair::CD => "CD",
+        };
+        write!(f, "{str_repr}")
     }
 }
