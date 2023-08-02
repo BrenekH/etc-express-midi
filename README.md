@@ -1,7 +1,6 @@
 # ETC Express MIDI
 
-Rust library to control the [ETC Express](https://www.etcconnect.com/Products/Legacy/Console/Others/Express/Support-Articles.aspx)
-using MIDI commands.
+Rust library to control the [ETC Express](https://www.etcconnect.com/Products/Legacy/Console/Others/Express/Support-Articles.aspx) lighting console using MIDI commands.
 
 This library contains 2 methods of interacting with the Express console:
 - [Method 1](ConsoleETCMidi) uses MIDI instrument commands to interact with the cue and macro functionality

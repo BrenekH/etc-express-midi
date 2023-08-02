@@ -2,6 +2,14 @@
 name = "etc-express-midi"
 version = "0.2.0"
 edition = "2021"
+license = "MIT"
+description = "Control the ETC Express lighting console using MIDI commands."
+homepage = "https://github.com/BrenekH/etc-express-midi#readme"
+documentation = "https://docs.rs/etc-express-midi"
+repository = "https://github.com/BrenekH/etc-express-midi"
+readme = "README.md"
+keywords = ["etc", "express", "midi", "lighting"]
+categories = ["api-bindings"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

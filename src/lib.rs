@@ -1,5 +1,5 @@
 //! Control the [ETC Express](https://www.etcconnect.com/Products/Legacy/Console/Others/Express/Support-Articles.aspx)
-//! using MIDI commands.
+//! lighting console using MIDI commands.
 //!
 //! This library contains 2 methods of interacting with the Express console:
 //! - [Method 1](ConsoleETCMidi) uses MIDI instrument commands to interact with the cue and macro functionality
